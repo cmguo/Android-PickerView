@@ -289,12 +289,14 @@ public class WheelView extends View {
      */
     public final void setCyclic(boolean cyclic) {
         isLoop = cyclic;
+        invalidate();
     }
 
     public final void setTypeface(Typeface font) {
         typeface = font;
         paintOuterText.setTypeface(typeface);
         paintCenterText.setTypeface(typeface);
+        requestLayout();
     }
 
     public final void setTextSize(float size) {
@@ -302,6 +304,7 @@ public class WheelView extends View {
             textSize = (int) (context.getResources().getDisplayMetrics().density * size);
             paintOuterText.setTextSize(textSize);
             paintCenterText.setTextSize(textSize);
+            requestLayout();
         }
     }
 
@@ -328,6 +331,7 @@ public class WheelView extends View {
             visibleCount += 1;
         }
         this.itemsVisible = visibleCount + 2; //第一条和最后一条
+        invalidate();
     }
 
     public void setAlphaGradient(boolean alphaGradient) {
@@ -749,12 +753,18 @@ public class WheelView extends View {
         this.label = label;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
     public void isCenterLabel(boolean isCenterLabel) {
         this.isCenterLabel = isCenterLabel;
+        invalidate();
     }
 
     public void setGravity(int gravity) {
         this.mGravity = gravity;
+        invalidate();
     }
 
     public int getTextWidth(Paint paint, String str) { //calculate text width
@@ -775,14 +785,15 @@ public class WheelView extends View {
     }
 
     public void setTextColorOut(int textColorOut) {
-
         this.textColorOut = textColorOut;
         paintOuterText.setColor(this.textColorOut);
+        invalidate();
     }
 
     public void setTextColorCenter(int textColorCenter) {
         this.textColorCenter = textColorCenter;
         paintCenterText.setColor(this.textColorCenter);
+        invalidate();
     }
 
     public void setTextXOffset(int textXOffset) {
@@ -790,16 +801,19 @@ public class WheelView extends View {
         if (textXOffset != 0) {
             paintCenterText.setTextScaleX(1.0f);
         }
+        invalidate();
     }
 
     public void setDividerWidth(int dividerWidth) {
         this.dividerWidth = dividerWidth;
         paintIndicator.setStrokeWidth(dividerWidth);
+        invalidate();
     }
 
     public void setDividerColor(int dividerColor) {
         this.dividerColor = dividerColor;
         paintIndicator.setColor(dividerColor);
+        invalidate();
     }
 
     public void setDividerType(DividerType dividerType) {
@@ -810,6 +824,7 @@ public class WheelView extends View {
         if (lineSpacingMultiplier != 0) {
             this.lineSpacingMultiplier = lineSpacingMultiplier;
             judgeLineSpace();
+            invalidate();
         }
     }
 

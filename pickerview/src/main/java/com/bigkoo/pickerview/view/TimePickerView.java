@@ -24,7 +24,7 @@ import java.util.Date;
  */
 public class TimePickerView extends BasePickerView implements View.OnClickListener {
 
-    private WheelTime wheelTime; //自定义控件
+    private WheelTime2 wheelTime; //自定义控件
     private static final String TAG_SUBMIT = "submit";
     private static final String TAG_CANCEL = "cancel";
 
@@ -83,17 +83,13 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
     }
 
     private void initWheelTime(LinearLayout timePickerView) {
-        wheelTime = new WheelTime(timePickerView, mPickerOptions.type, mPickerOptions.textGravity, mPickerOptions.textSizeContent);
+        wheelTime = new WheelTime2(timePickerView, mPickerOptions.type, mPickerOptions.textGravity, mPickerOptions.textSizeContent);
         if (mPickerOptions.timeSelectChangeListener != null) {
             wheelTime.setSelectChangeCallback(new ISelectTimeCallback() {
                 @Override
                 public void onTimeSelectChanged() {
-                    try {
-                        Date date = WheelTime.dateFormat.parse(wheelTime.getTime());
-                        mPickerOptions.timeSelectChangeListener.onTimeSelectChanged(date);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                    Date date = wheelTime.getTime();
+                    mPickerOptions.timeSelectChangeListener.onTimeSelectChanged(date);
                 }
             });
         }
@@ -129,10 +125,8 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
         }
 
         setTime();
-        wheelTime.setLabels(mPickerOptions.label_year, mPickerOptions.label_month, mPickerOptions.label_day
-                , mPickerOptions.label_hours, mPickerOptions.label_minutes, mPickerOptions.label_seconds);
-        wheelTime.setTextXOffset(mPickerOptions.x_offset_year, mPickerOptions.x_offset_month, mPickerOptions.x_offset_day,
-                mPickerOptions.x_offset_hours, mPickerOptions.x_offset_minutes, mPickerOptions.x_offset_seconds);
+        wheelTime.setLabels(mPickerOptions.labels);
+        wheelTime.setTextXOffset(mPickerOptions.x_offsets);
         wheelTime.setItemsVisible(mPickerOptions.itemsVisibleCount);
         wheelTime.setAlphaGradient(mPickerOptions.isAlphaGradient);
         setOutSideCancelable(mPickerOptions.cancelable);
@@ -158,9 +152,8 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
      * 设置可以选择的时间范围, 要在setTime之前调用才有效果
      */
     private void setRange() {
-        wheelTime.setStartYear(mPickerOptions.startYear);
-        wheelTime.setEndYear(mPickerOptions.endYear);
-
+        //wheelTime.setStartYear(mPickerOptions.startYear);
+       //wheelTime.setEndYear(mPickerOptions.endYear);
     }
 
     /**
@@ -230,12 +223,8 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
 
     public void returnData() {
         if (mPickerOptions.timeSelectListener != null) {
-            try {
-                Date date = WheelTime.dateFormat.parse(wheelTime.getTime());
-                mPickerOptions.timeSelectListener.onTimeSelect(date, clickView);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            Date date = wheelTime.getTime();
+            mPickerOptions.timeSelectListener.onTimeSelect(date, clickView);
         }
     }
 
@@ -257,24 +246,24 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
      * @param lunar 农历的开关
      */
     public void setLunarCalendar(boolean lunar) {
-        try {
-            int year, month, day, hours, minute, seconds;
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(WheelTime.dateFormat.parse(wheelTime.getTime()));
-            year = calendar.get(Calendar.YEAR);
-            month = calendar.get(Calendar.MONTH);
-            day = calendar.get(Calendar.DAY_OF_MONTH);
-            hours = calendar.get(Calendar.HOUR_OF_DAY);
-            minute = calendar.get(Calendar.MINUTE);
-            seconds = calendar.get(Calendar.SECOND);
+//        try {
+//            int year, month, day, hours, minute, seconds;
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTime(WheelTime.dateFormat.parse(wheelTime.getTime()));
+//            year = calendar.get(Calendar.YEAR);
+//            month = calendar.get(Calendar.MONTH);
+//            day = calendar.get(Calendar.DAY_OF_MONTH);
+//            hours = calendar.get(Calendar.HOUR_OF_DAY);
+//            minute = calendar.get(Calendar.MINUTE);
+//            seconds = calendar.get(Calendar.SECOND);
 
             wheelTime.setLunarMode(lunar);
-            wheelTime.setLabels(mPickerOptions.label_year, mPickerOptions.label_month, mPickerOptions.label_day,
-                    mPickerOptions.label_hours, mPickerOptions.label_minutes, mPickerOptions.label_seconds);
-            wheelTime.setPicker(year, month, day, hours, minute, seconds);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//            wheelTime.setLabels(mPickerOptions.label_year, mPickerOptions.label_month, mPickerOptions.label_day,
+//                    mPickerOptions.label_hours, mPickerOptions.label_minutes, mPickerOptions.label_seconds);
+//            wheelTime.setPicker(year, month, day, hours, minute, seconds);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public boolean isLunarCalendar() {

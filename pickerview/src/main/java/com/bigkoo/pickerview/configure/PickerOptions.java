@@ -64,8 +64,8 @@ public class PickerOptions {
     public boolean cyclic = false;//是否循环
     public boolean isLunarCalendar = false;//是否显示农历
 
-    public String label_year, label_month, label_day, label_hours, label_minutes, label_seconds;//单位
-    public int x_offset_year, x_offset_month, x_offset_day, x_offset_hours, x_offset_minutes, x_offset_seconds;//单位
+    public String[] labels;//单位
+    public int[] x_offsets;//单位
 
 
     public PickerOptions(int buildType) {
