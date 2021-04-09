@@ -9,6 +9,9 @@ import java.util.List;
 
 public class CalendarWheelAdapter implements WheelAdapter<Object> {
 
+    public static final int MAX_YEAR = 2200;
+    public static final int MIN_YEAR = 1900;
+
     public enum Field {
         YEAR(Calendar.YEAR),
         MONTH(Calendar.FIELD_COUNT), // ALL MONTH
@@ -61,9 +64,9 @@ public class CalendarWheelAdapter implements WheelAdapter<Object> {
             end = checkLunarSolar(endDate);
             if (current != null) {
                 Calendar c = current;
-                if (c.before(start))
+                if (start != null && c.before(start))
                     c = (Calendar) start.clone();
-                else if (current.after(end))
+                else if (end != null && current.after(end))
                     c = (Calendar) end.clone();
                 current = null;
                 setCurrent(c);
@@ -71,8 +74,6 @@ public class CalendarWheelAdapter implements WheelAdapter<Object> {
         }
 
         public void setCurrent(Calendar day) {
-            if (start == null || end == null)
-                return;
             day = checkLunarSolar(day);
             boolean diff = false;
             if (current == null) {
@@ -114,19 +115,19 @@ public class CalendarWheelAdapter implements WheelAdapter<Object> {
                 return;
             }
             if (field == Calendar.YEAR) {
-                values[0] = start.get(field);
-                values[1] = end.get(field);
+                values[0] = start == null ? 1900 : start.get(field);
+                values[1] = end == null ? 2200 : end.get(field);
                 return;
             }
             int cur = current.get(field);
             int min = current.getActualMinimum(field);
             int max = current.getActualMaximum(field);
             current.add(field, min - cur);
-            if (current.before(start)) {
+            if (start != null && current.before(start)) {
                 min = start.get(field);
             }
             current.add(field, max - min);
-            if (current.after(end)) {
+            if (end != null && current.after(end)) {
                 max = end.get(field);
             }
             current.add(field, cur - max);
@@ -137,11 +138,12 @@ public class CalendarWheelAdapter implements WheelAdapter<Object> {
         private void getAllMinMax(int field, int[] values) {
             values[0] = 0;
             if (field == Calendar.FIELD_COUNT) { // Month
-                int s = start.get(Calendar.MONTH) + start.get(Calendar.YEAR) * 12;
-                int e = end.get(Calendar.MONTH) + end.get(Calendar.YEAR) * 12;
+                int s = start == null ? MIN_YEAR * 12 : (start.get(Calendar.MONTH) + start.get(Calendar.YEAR) * 12);
+                int e = end == null ? MAX_YEAR * 12 :  (end.get(Calendar.MONTH) + end.get(Calendar.YEAR) * 12);
                 values[1] = e - s;
             } else {
-                long days = (end.getTime().getTime() - start.getTime().getTime());
+                // TODO:
+                long days = (end == null ? (MAX_YEAR - MIN_YEAR) * 365 : end.getTimeInMillis() - (start == null ? 0 : start.getTimeInMillis()));
                 days = (days + MS_IN_DAY - 1) / MS_IN_DAY;
                 if (field == Calendar.FIELD_COUNT + 1) { // Week
                     values[1] = (int) ((days + 6) / 7);
@@ -183,11 +185,11 @@ public class CalendarWheelAdapter implements WheelAdapter<Object> {
 
         private int getAll(Calendar cal, int field) {
             if (field == Calendar.FIELD_COUNT) {
-                int s = start.get(Calendar.MONTH) + start.get(Calendar.YEAR) * 12;
+                int s = start == null ? MIN_YEAR * 12 : (start.get(Calendar.MONTH) + start.get(Calendar.YEAR) * 12);
                 int e = cal.get(Calendar.MONTH) + cal.get(Calendar.YEAR) * 12;
                 return e - s;
             } else {
-                long days = (cal.getTime().getTime() - start.getTime().getTime());
+                long days = (cal.getTime().getTime() - (start == null ? 0 : start.getTime().getTime()));
                 days = (days + MS_IN_DAY - 1) / MS_IN_DAY;
                 if (field == Calendar.FIELD_COUNT + 1)
                     return (int) ((days + 6) / 7);

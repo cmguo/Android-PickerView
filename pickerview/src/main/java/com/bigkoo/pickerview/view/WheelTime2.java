@@ -319,7 +319,7 @@ public class WheelTime2 {
     }
 
     public void setLabels(String[] labels) {
-        if (labels == null && labels.length != 8)
+        if (labels == null || labels.length != 8)
             return;
         this.labels = labels;
         if (isLunarCalendar) {
@@ -329,7 +329,7 @@ public class WheelTime2 {
     }
 
     public void setTextXOffset(int[] offsets) {
-        if (offsets == null && offsets.length != 8)
+        if (offsets == null || offsets.length != 8)
             return;
         for (int i = 0; i < 8; ++i) {
             wheelViews[i].setTextXOffset(offsets[i]);
