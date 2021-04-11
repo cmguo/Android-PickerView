@@ -126,11 +126,11 @@ public class CalendarWheelAdapter implements WheelAdapter<Object> {
             if (start != null && current.before(start)) {
                 min = start.get(field);
             }
-            current.add(field, max - min);
+            current.add(field, max - current.get(field));
             if (end != null && current.after(end)) {
                 max = end.get(field);
             }
-            current.add(field, cur - max);
+            current.add(field, cur - current.get(field));
             values[0] = min;
             values[1] = max;
         }
