@@ -4,8 +4,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -13,7 +13,7 @@ import com.bigkoo.pickerview.R;
 import com.bigkoo.pickerview.configure.PickerOptions;
 import com.bigkoo.pickerview.listener.ISelectTimeCallback;
 
-import java.text.ParseException;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -76,14 +76,14 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
             mPickerOptions.customListener.customLayout(LayoutInflater.from(context).inflate(mPickerOptions.layoutRes, contentContainer));
         }
         // 时间转轮 自定义控件
-        LinearLayout timePickerView = (LinearLayout) findViewById(R.id.timepicker);
+        ViewGroup timePickerView = (ViewGroup) findViewById(R.id.timepicker);
         if (mPickerOptions.customListener == null)
             timePickerView.setBackgroundColor(mPickerOptions.bgColorWheel);
 
         initWheelTime(timePickerView);
     }
 
-    private void initWheelTime(LinearLayout timePickerView) {
+    private void initWheelTime(ViewGroup timePickerView) {
         wheelTime = new WheelTime2(timePickerView, mPickerOptions.type, mPickerOptions.textGravity, mPickerOptions.textSizeContent);
         if (mPickerOptions.timeSelectChangeListener != null) {
             wheelTime.setSelectChangeCallback(new ISelectTimeCallback() {

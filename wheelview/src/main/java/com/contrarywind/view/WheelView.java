@@ -220,7 +220,10 @@ public class WheelView extends View {
         //求出半径
         radius = (int) (halfCircumference / Math.PI);
         //控件宽度，这里支持weight
+        int measuredWidthMode = MeasureSpec.getMode(widthMeasureSpec);
         measuredWidth = MeasureSpec.getSize(widthMeasureSpec);
+        if (measuredWidthMode == MeasureSpec.UNSPECIFIED || measuredWidthMode == MeasureSpec.AT_MOST)
+            measuredWidth = maxTextWidth;
         //计算两条横线 和 选中项画笔的基线Y位置
         firstLineY = (measuredHeight - itemHeight) / 2.0F;
         secondLineY = (measuredHeight + itemHeight) / 2.0F;
@@ -242,7 +245,10 @@ public class WheelView extends View {
      */
     private void measureTextWidthHeight() {
         Rect rect = new Rect();
-        for (int i = 0; i < adapter.getItemsCount(); i++) {
+        maxTextWidth = 0;
+        int count = adapter.getItemsCount();
+        if (count > 10) count = 10;
+        for (int i = 0; i < count; i++) {
             String s1 = getContentText(adapter.getItem(i));
             paintCenterText.getTextBounds(s1, 0, s1.length(), rect);
 
@@ -322,8 +328,7 @@ public class WheelView extends View {
 
     public final void setAdapter(WheelAdapter adapter) {
         this.adapter = adapter;
-        reMeasure();
-        invalidate();
+        requestLayout();
     }
 
     public void setItemsVisibleCount(int visibleCount) {
