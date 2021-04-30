@@ -307,7 +307,7 @@ public class WheelTime2 {
         }
         CalendarWheelAdapter adapter = new CalendarWheelAdapter(adpaterState, field, formatter, (adapter2) -> {
             view.setAdapter(adapter2);
-            view.setCurrentItem(adapter2.curValue() - adapter2.minValue());
+            view.setCurrentItem(adapter2.getCurrent());
         });
         if (formatter != null)
             view.setLabel("");
