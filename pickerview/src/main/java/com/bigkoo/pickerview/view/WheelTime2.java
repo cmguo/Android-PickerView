@@ -314,7 +314,8 @@ public class WheelTime2 {
         view.setVisibility(View.VISIBLE);
         view.setOnItemSelectedListener((index) -> {
             adapter.setCurrent(index);
-            mSelectChangeCallback.onTimeSelectChanged();
+            if (mSelectChangeCallback != null)
+                mSelectChangeCallback.onTimeSelectChanged();
         });
     }
 
