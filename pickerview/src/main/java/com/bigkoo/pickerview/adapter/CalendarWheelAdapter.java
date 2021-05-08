@@ -283,7 +283,8 @@ public class CalendarWheelAdapter implements WheelAdapter<Object> {
 
     public void setInterval(int interval) {
         this.interval = interval;
-        listener.dataSetChanged(this);
+        if (calendar.current != null)
+            listener.dataSetChanged(this);
     }
 
     @Override

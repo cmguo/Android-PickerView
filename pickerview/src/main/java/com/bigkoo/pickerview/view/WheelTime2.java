@@ -49,7 +49,7 @@ public class WheelTime2 {
 
     private int dateMode;
     private int timeMode;
-    private int timeInterval;
+    private int timeInterval = 1;
 
     private final CalendarWheelAdapter.UnionState adpaterState;
 
@@ -270,7 +270,7 @@ public class WheelTime2 {
                 last = i;
         }
         if (last < 3)
-            ((CalendarWheelAdapter) wheelViews[last].getAdapter()).setInterval(timeInterval);
+            adpaterState.lastItem().setInterval(timeInterval);
     }
 
     private CalendarWheelAdapter.Formatter joinFormatter(CalendarWheelAdapter.Formatter formatter,
